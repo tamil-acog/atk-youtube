@@ -1,3 +1,5 @@
+import logging
+
 from atk_youtube_transcript.transcript import Transcript
 from atk_youtube_transcript.data_parser import chapters_parser, description_parser
 from atk_youtube_transcript.utils import get_transcripts
@@ -15,7 +17,6 @@ def transcript(video_code: str, outfile: str):
         api_chapters_response: requests.Response = requests.get(f'https://yt.lemnoslife.com/videos?part='
                                                                 f'chapters&id={video_code}')
         parsed_time, parsed_title, parsed_images_url = chapters_parser(api_chapters_response)
-        print(parsed_time, parsed_title)
         if len(parsed_time) != 0:
             do_transcript.transcript_with_chapters(parsed_time, parsed_title, parsed_images_url, video_code, outfile)
         else:
@@ -30,7 +31,11 @@ def transcript(video_code: str, outfile: str):
                 do_transcript.plain_transcript(video_code, outfile)
 
     except Exception as err:
-        do_transcript.whisper_transcript()
+        logging.info(err)
+        try:
+            do_transcript.whisper_transcript(video_code, outfile)
+        except Exception as err:
+            logging.info(err)
 
 
 def main() -> None:

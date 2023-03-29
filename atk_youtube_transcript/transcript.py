@@ -1,16 +1,16 @@
 from atk_youtube_transcript.data_parser import data, whisper_data
-from atk_youtube_transcript.prompt import title_prompt, general_prompt
+from atk_youtube_transcript.prompt import chapter_prompt, description_prompt, general_prompt
 from langchain.llms import OpenAI
 from langchain.text_splitter import TokenTextSplitter
 from langchain.document_loaders import YoutubeLoader
 from langchain.docstore.document import Document
 from numba import jit, cuda
 from typing import List
+import pathlib
+import os
 import logging
 
 import warnings
-
-
 
 warnings.filterwarnings("ignore")
 logging.basicConfig(level='INFO')
@@ -19,26 +19,33 @@ logging.basicConfig(level='INFO')
 class Transcript:
     def __init__(self):
         self.llm = OpenAI(model_name="gpt-3.5-turbo", temperature=0)
-        self.title_prompt: str = title_prompt
+        self.chapter_prompt: str = chapter_prompt
+        self.description_prompt = description_prompt
         self.general_prompt: str = general_prompt
-        pass
+        self.main_dir = pathlib.Path(__file__).parent.resolve()
+        self.css_file = os.path.join(self.main_dir, "style.css")
 
     def transcript_with_chapters(self, parsed_time: List, parsed_title: List, parsed_images_url: List, video_code: str, outfile) -> None:
         logging.info(f"There are total {len(parsed_title)} chapters")
         logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
         start, text = data(parsed_time=parsed_time, parsed_title=parsed_title, video_code=video_code, method="chapters")
+        idx = 0
         counter = 0
+        with open(str(outfile) + ".html", "w") as file:
+            file.write(f"<head><link rel=\"stylesheet\" href=\"{self.css_file}\"></head>")
         for i in range(len(text)):
             if text[i] == "\n\n\n":
                 chunked_text = text[idx:i]
                 chunk = " ".join(chunked_text)
-                new_prompt = self.title_prompt + "\n\n" + chunk
+                image_link: str = f"\n<img src=\"{parsed_images_url[counter]}\" alt=\"Not Applicable\"/>"
+                image_prompt: str = f"\nImage link to be added: {image_link}"
+                title_link: str = f"\n\"https://www.youtube.com/watch?v={video_code}&t={start[idx]}s\""
+                link_prompt: str = f"\nLink to be added in the title: {title_link}"
+                new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
+                print(new_prompt)
                 response: str = self.llm(new_prompt)
                 with open(str(outfile) + ".html", "a+") as file:
                     file.write(f"\n\n{response}")
-                    file.write(f"\n<img src=\"{parsed_images_url[counter]}\" alt=\"Not Applicable\" />")
-                    file.write(f"\n<a href=\"https://www.youtube.com/watch?v={video_code}&t={start[idx]}s\">"
-                               f"{chunked_text[0]}</a>\n")
                     counter += 1
                 idx = i + 1
                 logging.info(f"Punctuated transcription completed for chapters: {counter}")
@@ -49,17 +56,20 @@ class Transcript:
         logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
         start, text = data(parsed_time=parsed_time, parsed_title=parsed_title, video_code=video_code,
                            method="description")
+        idx = 0
         counter = 0
+        with open(str(outfile) + ".html", "w") as file:
+            file.write(f"<head><link rel=\"stylesheet\" href=\"{self.css_file}\"></head>")
         for i in range(len(text)):
             if text[i] == "\n\n\n":
                 chunked_text = text[idx:i]
                 chunk = " ".join(chunked_text)
-                new_prompt = self.title_prompt + "\n\n" + chunk
+                title_link: str = f"\n\"https://www.youtube.com/watch?v={video_code}&t={start[idx]}s\""
+                link_prompt: str = f"\nLink to be added in the title: {title_link}"
+                new_prompt = self.description_prompt + "\n" + link_prompt + "\n\n" + chunk
                 response: str = self.llm(new_prompt)
                 with open(str(outfile) + ".html", "a+") as file:
                     file.write(f"\n\n{response}")
-                    file.write(f"\n<a href=\"https://www.youtube.com/watch?v={video_code}&t="
-                               f"{start[idx]}s\">{chunked_text[0]}</a>\n")
                 counter += 1
                 idx = i + 1
                 logging.info(f"Punctuated transcription completed for chapters: {counter}")
