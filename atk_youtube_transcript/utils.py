@@ -1,18 +1,7 @@
 import bisect
 from typing import List
 from youtube_transcript_api import YouTubeTranscriptApi
-from datetime import datetime
-
-
-def get_sec(time_str):
-    """Get seconds from time."""
-    if len(time_str.split(':')) == 3:
-        h, m, s = time_str.split(':')
-        return int(h) * 3600 + int(m) * 60 + int(s)
-    else:
-        m, s = time_str.split(':')
-        return int(m) * 60 + int(s)
-
+import requests
 
 def get_transcripts(video_code: str) -> List[str]:
     start: List = []
@@ -37,6 +26,16 @@ def find_lt(a, x):
             return i
         else:
             return i-1
+
+
+def get_video_title(video_code: str) -> str:
+    api_description_response: requests.Response = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part='
+                                                               f'snippet&id={video_code}&'
+                                                               f'key=AIzaSyDQP56aoFMwjJsanu3dfiGXmQEIkb-BzLc')
+
+    api_response = api_description_response.json()
+    video_title: str = api_response['items'][0]['snippet']['title']
+    return video_title
 
 
 

@@ -21,26 +21,6 @@ Use the following output format:
 Begin:
 """
 
-description_prompt: str = """You are a youtube transcript punctuator agent. Given a youtube transcript, you should add all the punctuations wherever necessary without changing the content and context.
-If the content of the transcript is too long, break it into multiple paragraphs.
-
-Input format:
-
-Link to be added to the title:
-"link"
-
-Title
-
-Content of the transcript...
-
-Use the following output format:
-<h1 class="h1Element"><a href = "link">Title</a></h1>
-
-<div class="divElement"><p class="pElement">Punctuated content of the transcript</p></div>
-
-Begin:
-"""
-
 general_prompt: str = """You are a youtube transcript punctuator. Given a youtube transcript, you should add all the punctuations wherever necessary without losing the context.
                  Separate the transcripts into paragraphs wherever you think is logical and add titles to those paragraphs
                  Below is the transcript from a youtube video.

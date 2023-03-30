@@ -1,33 +1,9 @@
 import re
 from typing import List
-from atk_youtube_transcript.utils import get_sec, get_transcripts, find_lt
+from atk_youtube_transcript.utils import get_transcripts, find_lt
 import pytube
 import whisper
 from datetime import datetime
-
-
-def description_parser(api_response_object: object) -> List[str]:
-    """Given a video link, get the times from descriptions"""
-    description: str
-    parsed_time: List = []
-    parsed_title: List = []
-
-    # Get the description from the API response
-    api_response: object = api_response_object.json()
-    description = api_response['items'][0]['snippet']['description']
-
-    # Parse the time from descrption
-    pattern_time: str = r"\d\d?:\d\d?"
-    parsed_time = re.findall(pattern_time, description)
-
-    # Parse the title from description
-    pattern_title: str = r"\d{2}:\d{2}([\s\S]*?)\n"
-    parsed_title: List = re.findall(pattern_title, description)
-    final_pattern = r'(?:\d{2}:\d{2})(.*?)(?=\d{2}:\d{2}|$)'
-    final_matches = re.findall(final_pattern, description)
-    parsed_title.extend(final_matches)
-
-    return parsed_time, parsed_title
 
 
 def chapters_parser(api_response_object: object) -> List[str]:
@@ -37,7 +13,6 @@ def chapters_parser(api_response_object: object) -> List[str]:
     parsed_images_url: List = []
 
     number_of_titles: int = len(api_response['items'][0]['chapters']['chapters'])
-
     for i in range(0, number_of_titles):
         parsed_time.append(api_response['items'][0]['chapters']['chapters'][i]['time'])
         parsed_title.append(api_response['items'][0]['chapters']['chapters'][i]['title'])
@@ -48,12 +23,7 @@ def chapters_parser(api_response_object: object) -> List[str]:
 
 def data(parsed_time: List, parsed_title: List, video_code: str, method: str = None) -> List:
 
-    parsed_time_in_seconds = []
-    if method == "description":
-        for i in parsed_time:
-            parsed_time_in_seconds.append(get_sec(i))
-    else:
-        parsed_time_in_seconds = parsed_time
+    parsed_time_in_seconds: List = parsed_time
 
     start, text = get_transcripts(video_code)
 
@@ -82,7 +52,7 @@ def whisper_data(video_code: str, outfile: str) -> List:
     audio = video.streams.get_audio_only()
     audio.download(filename=outfile + '.mp3')
     model = whisper.load_model("small")
-    transcription = model.transcribe('/home/jupyter/notebooks/Test.mp3')
+    transcription = model.transcribe(outfile+'.mp3')
     res = transcription['segments']
 
     texts = []
