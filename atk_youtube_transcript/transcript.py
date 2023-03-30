@@ -35,7 +35,7 @@ class Transcript:
         counter = 0
         with open(str(outfile) + ".html", "w") as file:
             file.write(f"<h1 style=\"text-align: center;\"><a href=\"https://www.youtube.com/watch?v={self.video_code}"
-                       f"\"></a><strong>{self.video_title}</strong></h1>")
+                       f"\"><strong>{self.video_title}</strong></a></h1>")
             file.write(f"<head><link rel=\"stylesheet\" href=\"{self.css_file}\"></head>")
         for i in range(len(text)):
             if text[i] == "\n\n\n":
@@ -68,7 +68,7 @@ class Transcript:
         docs = [Document(page_content=t) for t in texts]
         with open(str(outfile) + ".html", "w") as file:
             file.write(f"<h1 style=\"text-align: center;\"><a href=\"https://www.youtube.com/watch?v={self.video_code}"
-                       f"\"></a><strong>{self.video_title}</strong></h1>")
+                       f"\"><strong>{self.video_title}</strong></a></h1>")
         for d in docs:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
@@ -90,7 +90,7 @@ class Transcript:
         docs = [Document(page_content=t) for t in texts]
         with open(str(outfile) + ".html", "w") as file:
             file.write(f"<h1 style=\"text-align: center;\"><a href=\"https://www.youtube.com/watch?v={self.video_code}"
-                       f"\"></a><strong>{self.video_title}</strong></h1>")
+                       f"\"><strong>{self.video_title}</strong></a></h1>")
         for d in docs:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
