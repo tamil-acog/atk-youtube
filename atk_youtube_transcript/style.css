@@ -4,27 +4,16 @@
 }
 
 .pElement{
+    height:100%;
     width:70%;
     margin-right:25px;
 }
 
 .h1Element{
     padding:15px;
-    display: block;
-    font-size: 2em;
-    margin-block-start: 0em;
-    margin-block-end: 0em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-}
-
-.bodyElement{
-    display: block;
-    margin: 0px;
 }
 
 .imageElement{
-    height:10px;
+    height:250px;
     width:336px;
 }

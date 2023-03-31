@@ -1,6 +1,6 @@
-chapter_prompt: str = """You are a youtube transcript punctuator agent. Given a youtube transcript, you should add all 
-the  important punctuations wherever necessary without changing the content and context. 
-                  
+chapter_prompt: str = """You are a youtube transcript punctuator agent. Given a youtube transcript, you should add all the punctuations wherever necessary without changing the content and context.
+Remember punctuation is important.
+
 Input format:
 
 Image link to be added:
@@ -12,7 +12,6 @@ Link to be added to the title:
 Title
 
 Content of the transcript...
-
 
 Use the following output format:
 <h1 class="h1Element"><a href = "link">Title</a></h1>
