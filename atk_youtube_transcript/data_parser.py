@@ -4,10 +4,13 @@ from atk_youtube_transcript.utils import get_transcripts, find_lt
 import pytube
 import whisper
 from datetime import datetime
+import requests
 
 
-def chapters_parser(api_response_object: object) -> List[str]:
-    api_response = api_response_object.json()
+def chapters_parser(video_code: str) -> List[str]:
+    api_chapters_response: requests.Response = requests.get(f'https://yt.lemnoslife.com/videos?part='
+                                                            f'chapters&id={video_code}')
+    api_response = api_chapters_response.json()
     parsed_time: List = []
     parsed_title: List = []
     parsed_images_url: List = []
@@ -21,14 +24,12 @@ def chapters_parser(api_response_object: object) -> List[str]:
     return parsed_time, parsed_title, parsed_images_url
 
 
-def data(parsed_time: List, parsed_title: List, video_code: str, method: str = None) -> List:
-
-    parsed_time_in_seconds: List = parsed_time
+def data(parsed_time: List, parsed_title: List, video_code: str) -> List:
 
     start, text = get_transcripts(video_code)
 
     indexes: List = []
-    for j in parsed_time_in_seconds:
+    for j in parsed_time:
         indexes.append(find_lt(start, j))
 
     counter = -1
