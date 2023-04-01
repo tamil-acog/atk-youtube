@@ -35,17 +35,25 @@ class DataParser:
 
         counter = -1
         text.insert(-1, "\n\n\n")
+        start.insert(-1, "\n\n\n")
         for i in indexes[::-1]:
 
             if i == 0:
                 text.insert(0, "\n\n")
+                start.insert(0, "\n\n")
                 text.insert(0, parsed_title[0])
+                start.insert(0, parsed_title[0])
             else:
                 text.insert(i-1, "\n\n")
+                start.insert(i - 1, "\n\n")
                 text.insert(i-1, parsed_title[counter])
+                start.insert(i - 1, parsed_title[counter])
                 text.insert(i-1, "\n\n\n")
+                start.insert(i - 1, "\n\n\n")
                 counter -= 1
-        return start, text
+        modified_start: List = start
+        modified_text: List = text
+        return modified_start, modified_text
 
     @staticmethod
     def whisper_data(video_code: str, outfile: str) -> tuple[List, List]:

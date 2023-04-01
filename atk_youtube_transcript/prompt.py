@@ -1,4 +1,6 @@
-chapter_prompt: str = """You are a youtube transcript punctuator agent. Given a youtube transcript, you should add all the punctuations wherever necessary without changing the content and context.
+chapter_prompt: str = """You are a youtube transcript punctuator agent. Given a youtube transcript, you should add all the punctuations wherever necessary without changing the context and the meaning.
+Remove the unnecessary words that don't make sense in the sentence. You're allowed to rewrite the sentences but you must not change the meaning and you must not change the title I give you.
+If you rewrite something, send them only in the output format given below. Don't send them separately
 Remember punctuation is important.
 
 Input format:
