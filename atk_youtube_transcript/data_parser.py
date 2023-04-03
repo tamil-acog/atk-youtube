@@ -45,11 +45,11 @@ class DataParser:
                 start.insert(0, parsed_title[0])
             else:
                 text.insert(i-1, "\n\n")
-                start.insert(i - 1, "\n\n")
+                start.insert(i-1, "\n\n")
                 text.insert(i-1, parsed_title[counter])
-                start.insert(i - 1, parsed_title[counter])
+                start.insert(i-1, parsed_title[counter])
                 text.insert(i-1, "\n\n\n")
-                start.insert(i - 1, "\n\n\n")
+                start.insert(i-1, "\n\n\n")
                 counter -= 1
         modified_start: List = start
         modified_text: List = text

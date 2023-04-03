@@ -5,6 +5,7 @@ from langchain.llms import OpenAI
 from langchain.text_splitter import TokenTextSplitter
 from langchain.document_loaders import YoutubeLoader
 from langchain.docstore.document import Document
+from bs4 import BeautifulSoup
 import yaml
 from numba import jit, cuda
 from typing import List
@@ -56,7 +57,6 @@ class Transcript:
             if text[i] == "\n\n\n":
                 chunked_text = text[match_index:i]
                 chunk = " ".join(chunked_text)
-                print(chunk)
                 image_link: str = self.config["IMAGE_LINK"]
                 image_prompt: str = f"\nImage link to be added: {image_link.format(url=parsed_images_url[counter])}"
                 title_link: str = self.config["TITLE_LINK"]
@@ -65,9 +65,12 @@ class Transcript:
                 new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
                 print(new_prompt)
                 response: str = self.llm(new_prompt)
-                print(response, "hi")
                 with open(str(outfile) + ".html", "a+") as file:
-                    file.write(f"\n\n{response}")
+                    striped_response = response.splitlines()
+                    for html_response in striped_response:
+                        if bool(BeautifulSoup(html_response, "html.parser").find()):
+                            file.write(f"\n\n{html_response}")
+                    file.write(f"</div>")
                     counter += 1
                 match_index = i + 1
                 logging.info(f"Punctuated transcription completed for chapters: {counter}")

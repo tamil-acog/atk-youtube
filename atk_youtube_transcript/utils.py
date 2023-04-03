@@ -10,7 +10,7 @@ def find_lt(a, x):
         if a[i] == x:
             return i
         else:
-            return i+1
+            return i-1
 
 
 
