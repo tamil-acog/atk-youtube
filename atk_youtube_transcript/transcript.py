@@ -26,7 +26,8 @@ class Transcript:
         self.chapter_prompt: str = chapter_prompt
         self.general_prompt: str = general_prompt
         self.main_dir = pathlib.Path(__file__).parent.resolve()
-        self.css_file = os.path.join(self.main_dir, "style.css")
+        self.chapters_css = os.path.join(self.main_dir, "chapters_style.css")
+        self.plain_css = os.path.join(self.main_dir, "plain_style.css")
         self.yaml_file = os.path.join(self.main_dir, "config.yaml")
         self.transcription_service = TranscriptionService(self.video_code)
         self.video_title = self.transcription_service.get_video_title()
@@ -37,16 +38,14 @@ class Transcript:
         logging.info(f"There are total {len(parsed_title)} chapters")
         logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
         start, text = DataParser.data(parsed_time=parsed_time, parsed_title=parsed_title, video_code=self.video_code)
-        with open("test.py", "w") as d:
-            d.write(str(text))
-            d.write(str(start))
 
         with open(str(outfile) + ".html", "w") as file:
+            with open(self.chapters_css, "r") as f:
+                for line in f:
+                    file.write(line)
             video_link: str = self.config["VIDEO_LINK"]
             video_link_format: str = video_link.format(code=self.video_code, title=self.video_title)
             file.write(video_link_format)
-            #file.write(f"<head><link rel=\"stylesheet\" href=\"{self.css_file}\"></head>")
-            file.write(f"<head><link rel=\"stylesheet\" href=\"style.css\"></head>")
 
         title_time = 0
         match_index = 0
@@ -63,7 +62,6 @@ class Transcript:
                 link_prompt: str = f"\nLink to be added in the title: " \
                                    f"{title_link.format(code=self.video_code, time=start[title_time])}"
                 new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
-                print(new_prompt)
                 response: str = self.llm(new_prompt)
                 with open(str(outfile) + ".html", "a+") as file:
                     striped_response = response.splitlines()
@@ -88,18 +86,22 @@ class Transcript:
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
         with open(str(outfile) + ".html", "w") as file:
+            with open(self.plain_css, "r") as f:
+                for line in f:
+                    file.write(line)
             video_link: str = self.config["VIDEO_LINK"]
             video_link_format: str = video_link.format(code=self.video_code, title=self.video_title)
             file.write(video_link_format)
-            # file.write(f"<head><link rel=\"stylesheet\" href=\"{self.css_file}\"></head>")
-            file.write(f"<head><link rel=\"stylesheet\" href=\"style.css\"></head>")
 
         for d in docs:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
             with open(outfile + ".html", 'a+') as f:
-                f.write(f"\n{response}")
+                striped_response = response.splitlines()
+                for html_response in striped_response:
+                    if bool(BeautifulSoup(html_response, "html.parser").find()):
+                        file.write(f"\n\n{html_response}")
         return
 
     # @jit(target_backend='cuda')
@@ -115,18 +117,22 @@ class Transcript:
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
         with open(str(outfile) + ".html", "w") as file:
+            with open(self.plain_css, "r") as f:
+                for line in f:
+                    file.write(line)
             video_link: str = self.config["VIDEO_LINK"]
             video_link_format: str = video_link.format(code=self.video_code, title=self.video_title)
             file.write(video_link_format)
-            # file.write(f"<head><link rel=\"stylesheet\" href=\"{self.css_file}\"></head>")
-            file.write(f"<head><link rel=\"stylesheet\" href=\"style.css\"></head>")
 
         for d in docs:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
             with open(outfile + ".html", 'a+') as f:
-                f.write(f"\n{response}")
+                striped_response = response.splitlines()
+                for html_response in striped_response:
+                    if bool(BeautifulSoup(html_response, "html.parser").find()):
+                        file.write(f"\n\n{html_response}")
         return
 
 

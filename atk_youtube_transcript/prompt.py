@@ -1,6 +1,6 @@
 chapter_prompt: str = """You are a youtube transcript punctuator agent. Given a youtube transcript, you should add all the punctuations wherever necessary without changing the context and the meaning.
 Remove the unnecessary words that don't make sense in the sentence. You're allowed to rewrite the sentences but you must not change the meaning and you must not change the title I give you.
-If the content is too long, split the content into multiple paragraphs and send them as mentioned in the output format.
+If the content is too long, you must split the content into multiple paragraphs and send them as mentioned in the output format.
 Remember punctuation is important.
 
 Input format:

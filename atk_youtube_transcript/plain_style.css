@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+
+  * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+
+  :root {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+    color: black;
+  }
+
+  body {
+    background-color: #e8e8e8;
+    padding: 2rem 5vw;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1.8rem;
+    margin: 2.5rem 0 0.8rem;
+  }
+
+  p {
+    margin-top: 0.8rem;
+  }
+</style>
