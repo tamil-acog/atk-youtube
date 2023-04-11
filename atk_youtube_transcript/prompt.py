@@ -22,19 +22,14 @@ Use the following output format:
 <p class="pElement">Para 1 of Punctuated content of the transcript</p>
 <p class="pElement">Para 2 of Punctuated content of the transcript</p>
 <p class="pElement">Para 3 of Punctuated content of the transcript</p>
-<<<<<<< Updated upstream
 <p class="pElement">Para 4 of Punctuated content of the transcript</p>
 <img class="imageElement" src = "image_link" />
 
-=======
-<img class="imageElement" src = "image_link" />
->>>>>>> Stashed changes
 
 Begin:
 """
 
 general_prompt: str = """You are a youtube transcript punctuator. Given a youtube transcript, you need to do the following instruction.
-<<<<<<< Updated upstream
 
 Input:
 The youtube transcript.
@@ -53,32 +48,6 @@ Use the following Output format:
 <p>Para_1</p>
 <p>para_2</p>
 
-=======
-
-Input:
-The youtube transcript.
-
-Instruction:
-1.You should add all the punctuations wherever necessary without losing the context.
-2.Separate the transcripts into multiple paragraphs wherever you think is logical and add titles to those paragraphs.
-3.You're allowed to rewrite the sentences but you must not change the meaning and generate texts
-4.Give the output in html format. Headings should be inside <h2></h2> and the paragraphs should be inside <p></p> and it must be single line.
-5.If there are multiple points being discussed inside a paragraph use bullet points.
-
-
-Use the following Output format:
-
-<h2>Sub_Title_1</h2>
-<p>Para_1</p>
-<p>para_2</p>
-
-
-<h2>Sub_Title_2</h2>
-<p>Para_1</p>
-<p>para_2</p>
-
-
->>>>>>> Stashed changes
 and so on...
 
 Begin:

@@ -28,6 +28,5 @@ def transcript(video_code: str):
             logging.info(err)
 
 
-
 def main() -> None:
     app()
