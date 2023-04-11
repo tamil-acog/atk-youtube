@@ -37,4 +37,10 @@
   p {
     margin-top: 0.8rem;
   }
+
+  ul {
+  	list-style-position: inside;
+  	text-align: left;
+  }
+
 </style>

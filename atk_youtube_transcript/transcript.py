@@ -1,6 +1,7 @@
 from atk_youtube_transcript.data_parser import DataParser
 from atk_youtube_transcript.prompt import chapter_prompt, general_prompt
 from atk_youtube_transcript.transcription_service import TranscriptionService
+from atk_youtube_transcript.utils import html_parser
 from langchain.llms import OpenAI
 from langchain.text_splitter import TokenTextSplitter
 from langchain.document_loaders import YoutubeLoader
@@ -21,6 +22,7 @@ class Transcript:
         self.chapter_prompt: str = chapter_prompt
         self.general_prompt: str = general_prompt
         self.main_dir = pathlib.Path(__file__).parent.resolve()
+        self.css_file = os.path.join(self.main_dir, "style.css")
         self.chapters_css = os.path.join(self.main_dir, "chapters_style.css")
         self.plain_css = os.path.join(self.main_dir, "plain_style.css")
         self.yaml_file = os.path.join(self.main_dir, "config.yaml")
@@ -33,6 +35,7 @@ class Transcript:
         print(f"There are total {len(parsed_title)} chapters")
         print(f"Usually it takes around 5-8 mins for a 40 mins video")
         start, text = DataParser.data(parsed_time=parsed_time, parsed_title=parsed_title, video_code=self.video_code)
+
         file_name = str(self.video_title) + "-" + str(self.video_code) + ".html"
         with open(file_name, "w") as file:
             with open(self.chapters_css, "r") as f:
@@ -41,6 +44,7 @@ class Transcript:
             video_link: str = self.config["VIDEO_LINK"]
             video_link_format: str = video_link.format(code=self.video_code, title=self.video_title)
             file.write(video_link_format)
+
 
         title_time = 0
         match_index = 0
@@ -58,10 +62,12 @@ class Transcript:
                 link_prompt: str = f"\nLink to be added in the title: " \
                                    f"{title_link.format(code=self.video_code, time=start[title_time])}"
                 new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
+
                 response: str = self.llm(new_prompt)
-                with open(file_name, "a+") as file:
-                    file.write(f"\n\n{response}")
-                    file.write(f"</div>")
+                final_response = html_parser(response)
+
+                with open(file_name, 'a+') as f:
+                    f.write(f"\n{final_response}")
                     counter += 1
                 match_index = i + 1
                 print(f"Punctuated transcription completed for chapters: {counter}")
@@ -78,6 +84,7 @@ class Transcript:
             chunk_size=1300, chunk_overlap=0)
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
+
         file_name = str(self.video_title) + "-" + str(self.video_code) + ".html"
         with open(file_name, "w") as file:
             with open(self.plain_css, "r") as f:
@@ -91,8 +98,9 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
+            final_response = html_parser(response)
             with open(file_name, "a+") as file:
-                file.write(f"\n\n{response}")
+                file.write(f"\n{final_response}")
         return os.path.join(self.main_dir, file_name)
 
     # @jit(target_backend='cuda')
@@ -120,7 +128,9 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
-            with open(file_name, "a+") as file:
-                file.write(f"\n\n{response}")
+            final_response = html_parser(response)
+            with open(file_name, 'a+') as f:
+                f.write(f"\n{final_response}")
         return os.path.join(self.main_dir, file_name)
+
 
