@@ -9,12 +9,9 @@ import yaml
 from typing import List
 import pathlib
 import os
-import logging
-
 import warnings
 
 warnings.filterwarnings("ignore")
-logging.basicConfig(level='INFO')
 
 
 class Transcript:
@@ -32,12 +29,12 @@ class Transcript:
         with open(self.yaml_file, "r") as f:
             self.config = yaml.safe_load(f)
 
-    def transcript_with_chapters(self, parsed_time: List, parsed_title: List, parsed_images_url: List) -> None:
-        logging.info(f"There are total {len(parsed_title)} chapters")
-        logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
+    def transcript_with_chapters(self, parsed_time: List, parsed_title: List, parsed_images_url: List) -> str:
+        print(f"There are total {len(parsed_title)} chapters")
+        print(f"Usually it takes around 5-8 mins for a 40 mins video")
         start, text = DataParser.data(parsed_time=parsed_time, parsed_title=parsed_title, video_code=self.video_code)
-
-        with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "w") as file:
+        file_name = str(self.video_title) + "-" + str(self.video_code) + ".html"
+        with open(file_name, "w") as file:
             with open(self.chapters_css, "r") as f:
                 for line in f:
                     file.write(line)
@@ -62,18 +59,18 @@ class Transcript:
                                    f"{title_link.format(code=self.video_code, time=start[title_time])}"
                 new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
                 response: str = self.llm(new_prompt)
-                with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "a+") as file:
+                with open(file_name, "a+") as file:
                     file.write(f"\n\n{response}")
                     file.write(f"</div>")
                     counter += 1
                 match_index = i + 1
-                logging.info(f"Punctuated transcription completed for chapters: {counter}")
-        return
+                print(f"Punctuated transcription completed for chapters: {counter}")
+        return os.path.join(self.main_dir, file_name)
 
-    def plain_transcript(self) -> None:
-        logging.info("Your video don't contain chapters or titles in the description."
+    def plain_transcript(self) -> str:
+        print("Your video don't contain chapters or titles in the description."
                      "So ChatGPT itself is going to add titles for your video")
-        logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
+        print(f"Usually it takes around 5-8 mins for a 40 mins video")
         loader = YoutubeLoader.from_youtube_channel(f"https://www.youtube.com/watch?v={self.video_code}")
         transcripts: List[Document] = loader.load()
         doc: Document = transcripts[0]
@@ -81,7 +78,8 @@ class Transcript:
             chunk_size=1300, chunk_overlap=0)
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
-        with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "w") as file:
+        file_name = str(self.video_title) + "-" + str(self.video_code) + ".html"
+        with open(file_name, "w") as file:
             with open(self.plain_css, "r") as f:
                 for line in f:
                     file.write(line)
@@ -93,15 +91,15 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
-            with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "a+") as file:
+            with open(file_name, "a+") as file:
                 file.write(f"\n\n{response}")
-        return
+        return os.path.join(self.main_dir, file_name)
 
     # @jit(target_backend='cuda')
-    def whisper_transcript(self) -> None:
-        logging.info("Your video do not have captions. So an Audio-to-Speech Model"
+    def whisper_transcript(self) -> str:
+        print("Your video do not have captions. So an Audio-to-Speech Model"
                      " will generate the transcripts for you.")
-        logging.info(f"Usually it takes around 20 mins for a 40 mins video if it does not contain captions")
+        print(f"Usually it takes around 20 mins for a 40 mins video if it does not contain captions")
         start, texts = DataParser.whisper_data(video_code=self.video_code, video_title=self.video_title)
         transcript = " ".join(texts).strip(" ")
         doc: Document = Document(page_content=transcript)
@@ -109,7 +107,8 @@ class Transcript:
             chunk_size=1300, chunk_overlap=0)
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
-        with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "w") as file:
+        file_name = str(self.video_title) + "-" + str(self.video_code) + ".html"
+        with open(file_name, "w") as file:
             with open(self.plain_css, "r") as f:
                 for line in f:
                     file.write(line)
@@ -121,7 +120,7 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
-            with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "a+") as file:
+            with open(file_name, "a+") as file:
                 file.write(f"\n\n{response}")
-        return
+        return os.path.join(self.main_dir, file_name)
 
