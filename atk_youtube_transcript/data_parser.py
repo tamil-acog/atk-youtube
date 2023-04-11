@@ -21,6 +21,7 @@ class DataParser:
             parsed_images_url.append(api_response['items'][0]['chapters']['chapters'][i]['thumbnails'][1]['url'])
 
         return parsed_time, parsed_title, parsed_images_url
+
     @staticmethod
     def data(parsed_time: List, parsed_title: List, video_code: str) -> tuple[List, List]:
 
@@ -56,13 +57,13 @@ class DataParser:
         return modified_start, modified_text
 
     @staticmethod
-    def whisper_data(video_code: str, outfile: str) -> tuple[List, List]:
+    def whisper_data(video_code: str, video_title: str) -> tuple[List, List]:
         url = f"https://www.youtube.com/watch?v={video_code}"
         video = pytube.YouTube(url)
         audio = video.streams.get_audio_only()
-        audio.download(filename=outfile + '.mp3')
+        audio.download(filename=video_title + "-" + video_code + '.mp3')
         model = whisper.load_model("small")
-        transcription = model.transcribe(outfile+'.mp3')
+        transcription = model.transcribe(video_title + "-" + video_code + '.mp3')
         res = transcription['segments']
 
         texts = []

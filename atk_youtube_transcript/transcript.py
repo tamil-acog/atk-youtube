@@ -5,9 +5,7 @@ from langchain.llms import OpenAI
 from langchain.text_splitter import TokenTextSplitter
 from langchain.document_loaders import YoutubeLoader
 from langchain.docstore.document import Document
-from bs4 import BeautifulSoup
 import yaml
-from numba import jit, cuda
 from typing import List
 import pathlib
 import os
@@ -34,12 +32,12 @@ class Transcript:
         with open(self.yaml_file, "r") as f:
             self.config = yaml.safe_load(f)
 
-    def transcript_with_chapters(self, parsed_time: List, parsed_title: List, parsed_images_url: List, outfile: str) -> None:
+    def transcript_with_chapters(self, parsed_time: List, parsed_title: List, parsed_images_url: List) -> None:
         logging.info(f"There are total {len(parsed_title)} chapters")
         logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
         start, text = DataParser.data(parsed_time=parsed_time, parsed_title=parsed_title, video_code=self.video_code)
 
-        with open(str(outfile) + ".html", "w") as file:
+        with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "w") as file:
             with open(self.chapters_css, "r") as f:
                 for line in f:
                     file.write(line)
@@ -58,23 +56,21 @@ class Transcript:
                 chunk = " ".join(chunked_text)
                 image_link: str = self.config["IMAGE_LINK"]
                 image_prompt: str = f"\nImage link to be added: {image_link.format(url=parsed_images_url[counter])}"
+                print(len(parsed_images_url))
                 title_link: str = self.config["TITLE_LINK"]
                 link_prompt: str = f"\nLink to be added in the title: " \
                                    f"{title_link.format(code=self.video_code, time=start[title_time])}"
                 new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
                 response: str = self.llm(new_prompt)
-                with open(str(outfile) + ".html", "a+") as file:
-                    striped_response = response.splitlines()
-                    for html_response in striped_response:
-                        if bool(BeautifulSoup(html_response, "html.parser").find()):
-                            file.write(f"\n\n{html_response}")
+                with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "a+") as file:
+                    file.write(f"\n\n{response}")
                     file.write(f"</div>")
                     counter += 1
                 match_index = i + 1
                 logging.info(f"Punctuated transcription completed for chapters: {counter}")
         return
 
-    def plain_transcript(self, outfile: str) -> None:
+    def plain_transcript(self) -> None:
         logging.info("Your video don't contain chapters or titles in the description."
                      "So ChatGPT itself is going to add titles for your video")
         logging.info(f"Usually it takes around 5-8 mins for a 40 mins video")
@@ -85,7 +81,7 @@ class Transcript:
             chunk_size=1300, chunk_overlap=0)
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
-        with open(str(outfile) + ".html", "w") as file:
+        with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "w") as file:
             with open(self.plain_css, "r") as f:
                 for line in f:
                     file.write(line)
@@ -97,26 +93,23 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
-            with open(outfile + ".html", 'a+') as f:
-                striped_response = response.splitlines()
-                for html_response in striped_response:
-                    if bool(BeautifulSoup(html_response, "html.parser").find()):
-                        file.write(f"\n\n{html_response}")
+            with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "a+") as file:
+                file.write(f"\n\n{response}")
         return
 
     # @jit(target_backend='cuda')
-    def whisper_transcript(self, outfile: str) -> None:
+    def whisper_transcript(self) -> None:
         logging.info("Your video do not have captions. So an Audio-to-Speech Model"
                      " will generate the transcripts for you.")
         logging.info(f"Usually it takes around 20 mins for a 40 mins video if it does not contain captions")
-        start, texts = DataParser.whisper_data(video_code=self.video_code, outfile=outfile)
+        start, texts = DataParser.whisper_data(video_code=self.video_code, video_title=self.video_title)
         transcript = " ".join(texts).strip(" ")
         doc: Document = Document(page_content=transcript)
         text_splitter = TokenTextSplitter(
             chunk_size=1300, chunk_overlap=0)
         texts = text_splitter.split_text(doc.page_content)
         docs = [Document(page_content=t) for t in texts]
-        with open(str(outfile) + ".html", "w") as file:
+        with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "w") as file:
             with open(self.plain_css, "r") as f:
                 for line in f:
                     file.write(line)
@@ -128,15 +121,7 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
-            with open(outfile + ".html", 'a+') as f:
-                striped_response = response.splitlines()
-                for html_response in striped_response:
-                    if bool(BeautifulSoup(html_response, "html.parser").find()):
-                        file.write(f"\n\n{html_response}")
+            with open(str(self.video_title) + "-" + str(self.video_code) + ".html", "a+") as file:
+                file.write(f"\n\n{response}")
         return
-
-
-
-
-
 
