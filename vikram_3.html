@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+
+  * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+
+  :root {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+    color: black;
+  }
+
+  body {
+    background-color: #e8e8e8;
+    padding: 2rem 5vw;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1.8rem;
+    margin: 2.5rem 0 0.8rem;
+  }
+
+  p {
+    margin-top: 0.8rem;
+  }
+
+  ul {
+  	list-style-position: inside;
+  	text-align: left;
+  }
+</style><h1 style="text-align: center;"><a href="https://www.youtube.com/watch?v=YtqVgfESPEg"><strong>Biopharmaceutical Informatics Symposium - Opening remarks; Dr. Lucy Colwell, Google Research.</strong></a></h1>
+<h2>Introduction</h2>
+<p>Hello everyone, welcome to the first ever Symposium on biopharmaceutical informatics. I'm really excited, along with Jan Janice Reichert, Pam Burghard, Victor, and myself, to organize this event and am thankful to the Antibody Society for hosting it. We have a great line of speakers today, and of course, our first speaker is Lucy Caldwell from Google Research.</p>
+<h2>Lucy Caldwell's Keynote Address</h2>
+<p>Thanks, Sandeep, for such a kind introduction. I'm just gonna start my screen share. I want to start off first by thanking the organizers for putting together this event, and I think this is a really exciting area right now. I'm going to give a talk that covers quite a few different areas to try and cover a wide range of subject matter. I actually sort of will talk about a couple of example experimental studies where we've worked with various biopharmaceutical topics. I also have a nanobody study that I'm really excited about that we're just finishing, and so if there's time at the end, I'll try and say a couple of things about that, but it's very much still sort of work in progress, but we're trying to finish it up, so yeah, we'll see how that goes. As we all know, there's tons and tons of sequence data. Here, I borrowed this plot from the EBI ENA statistics service. Unfortunately, they've stopped updating it in such a beautiful form, so I can only show you the plot from last November. I'm sort of hoping to encourage them to keep replacing this figure because I think there's just so much sequence data, and it's sort of an overwhelming amount of information. And as we've seen, that's really led to enormous strides in protein structure prediction and sort of co-evolution methods, and of course, the amazing progress made by AlphaFold and now AlphaFold 2 on this topic have really been enabled by this huge amount of data. And so I think there's enormous potential here to solve other problems too. I'm particularly interested in the problem of going directly from sequence to function. I should add an extra arrow here. I have nothing against using structural information, and I think that's a minor of useful information, and of course, now that we have these AlphaFold structures, there's lots of that to use, but I think the challenge of being able to read it function is still significant. You know, even if we are in many cases able to make a good prediction of the structure. And you know, I have this structure of Bloom fluorescent protein on the slide, but looking at the structure, it's hard to tell, you know, is this going to be green or cyan or red? What's the intensity? Is it going to work at all, or is there some mutation that's broken the activity? Of course, in nature, there are countless experiments by mutation and selection to find good proteins. We have access to all of this data, and also there's been this revolution in not only reading DNA but also writing DNA, so we can really synthesize sequences on demand. You know that the lengths are still rapidly increasing being so you can print oligos of up to 300 base pairs very, very easily, and synthesizing larger sequences is getting easier and easier as people develop techniques for stitching these together. So I think there's just this enormous abundance of data that provides a really rich source of information if we can only figure out how to decode it. And you know, we've clearly made a great start with this progress on protein structure prediction, and I hope to learn through the rest of this Symposium today much more about how we're making progress in other areas when we hear the other speakers talk. So I'm really interested generally in this problem of using that data to build models that capture the relationship between protein sequence and phenotype. Of course, phenotype is extremely ill-defined. I'm using it to talk about the feature type of a molecule, whereas normally we hear about the phenotype of an organism. Of course, a molecule has many different sort of functional properties, and you could put any of those properties on this y-axis here or z-axis I mean what you prefer to call it, but basically, this is a high-level sort of abstract image. The idea is that we can somehow learn a representation of sequence space in which we can navigate and move around and understand how moving in different directions will affect whatever functional activity it is that we happen to be interested in. I have this beautiful picture that I've borrowed from somebody's paper. I'm thinking of perhaps like protein families as being these different peaks in the landscape. You could imagine maybe even antibodies with different specificities being among these different peaks, and then within each peak, there are sort of hills and valleys, and it's extremely complicated. The most I've seen of these landscapes by collecting data is a data set of sort of close to half a million sequences, and it's extremely difficult to understand it.</p>
+<h2>Logistical Information</h2>
+<p>Before I start and hand over to Lucy, I do have a few logistical items. First of all, I want to remind everybody that this event is being recorded. We have a break planned somewhere between around 12:25, and we'll need to come back by 12:40. I also want to remind the audience that you will be muted throughout the event, but if you have any questions, we will be monitoring the questions through Q and A, so please send your questions as the speakers are speaking through Q&amp;A, and we will then at the end of the talk, we'll select some of these questions and ask them live. Thanks, everyone, and with this, I would hand it over to Lucy to deliver her keynote address.</p>
+<h2>Conrad Krasik's Talk</h2>
+<p>After Lucy's talk, we'll have Conrad Krasik, the CEO of Natural Antibody, as well as an assistant professor at Denmark. He is going to talk more about the importance of data sets in training their learning models and also developing machine learning algorithms.</p>
+<h2>Introduction</h2>
+<p>In this talk, I will discuss the challenges of understanding protein sequence data and the need for better tools to visualize and comprehend these landscapes. There is a lot of excitement about using models to discover or engineer new sequences, but even the natural sequences we have are not fully understood. In fact, one out of all protein coding genes from bacterial genomes cannot be annotated with a function. This has led to a need for better tools to annotate and optimize protein sequences.</p>
+<h2>Protein Annotation</h2>
+<p>Protein annotation is an example of protein discovery. There are many protein sequences out there in nature, but we need to discover what they do. The goal is to capture the relationship between protein sequence and functional properties or phenotypes. However, reducing data collection requirements is essential as it is not experimentally viable to collect thousands of data points for every protein of interest. Therefore, being able to transfer information between different proteins and functional activities is crucial. The overall goal is to learn some kind of representation that is more efficient and compact than raw amino acid sequence. This includes a general representation that can be used for many problems and a fine-tuned representation for specific questions of interest. Active learning loops can be used to design specific sequences, measure their activity in the lab, and use that data to build and fine-tune a model. An acquisition function can be defined to optimize the model and figure out what sequences to test next.</p>
+<ul>
+<li>Capture the relationship between protein sequence and functional properties or phenotypes</li>
+<li>Reduce data collection requirements</li>
+<li>Transfer information between different proteins and functional activities</li>
+<li>Learn a more efficient and compact representation</li>
+<li>Use active learning loops to design specific sequences and optimize the model</li>
+</ul>
+<h2>Deep Models for Sequence Space</h2>
+<p>There are over three billion protein sequences in the metagenomic dataset, but only 30% of them are completely annotated. This is beyond the reach of alignment-based approaches, which is why deep models are needed to do a better job of annotating these sequences. We approach this as a classification problem, starting with pre-cut domain sequences that have been cut using hidden Markov models. We focus on the existence of pfam, a protein family annotation database, and pre-train across millions or billions of unlabeled sequences to improve performance and reduce compute burning for prediction. We started with a simple problem of predicting which protein family an amino acid sequence came from, using pfam seed, which has a seed set of sequences and an acetate alignment for each of the roughly 18,000 families.</p>
+<h2>Protein Optimization</h2>
+<p>Protein optimization is the challenge of navigating sequence space to identify distant peaks and cross valleys. This involves being able to climb peaks and trade off between exploiting the model and exploring the sequence space that has not been explored yet. In silico Oracle is a machine learning approach that we have been developing and comparing different model-based optimization strategies and approaches for selecting batches of sequences. We have studied this in silico and have experimental work in the context of aav cancer design and peptide therapeutics.</p>
+<ul>
+<li>Navigate sequence space to identify distant peaks and cross valleys</li>
+<li>Climb peaks and trade off between exploiting the model and exploring the sequence space</li>
+<li>Use in silico Oracle to develop and compare different model-based optimization strategies and approaches</li>
+<li>Study in silico and have experimental work in the context of aav cancer design and peptide therapeutics</li>
+</ul>
+<h2>Distribution of Family Sizes</h2>
+<p>There is a wide distribution of family sizes in the dataset, with a good number of large families (roughly a thousand or more members) and a large number of families with less than 25 members. This makes it an awkward deep learning problem as there is a lot of data in total, but not that much data per class in many cases. Additionally, there is a very wide distribution of sequence lengths, with sequences between up to 2000 amino acids being common in the C database and a lot of very short sequences. This is a place where the hmms have been known to struggle.</p>
+<h2>The Model</h2>
+<p>We built a very simple model, a dilated resnet, which is a set of convolutional layers with a bunch of residual blocks. The convolutions are dilated, meaning there are holes in them, allowing us to integrate the information along the sequence. These are one-dimensional information convolutions, like a sliding window, but with holes in the convolutions, we can build models that have fewer parameters but still span the whole sequence lengths. We learn a fixed representation for every sequence, so we put in completely raw sequences, and every sequence, no matter how long it is, gets embedded into this fixed dimensional space. Once we've learned that representation, we can use it to classify.</p>
+<h2>Performance</h2>
+<ul>
+<li>We stratified the performance on the x-axis by the distance from the train data, with sequences that are identical to those in training being much easier to annotate than those that are more distant from training.</li>
+<li>By training a fairly large Ensemble of these neural networks, we could do quite a bit better than existing methods at this problem.</li>
+<li>The single model already did better overall, but it struggled with the most remote homologs.</li>
+<li>We built a clustered split, splitting each of the seed families so that every test sequence is at most 25 identical to any train sequence. We still can do better than the existing approaches, but for the most remote hot sequences, it is a difficult problem.</li>
+<li>If we use proximity in the learned representation space, we get a little bit more performance. We stratified the performance by family size, and as we get down to these really small families with less than 17 training examples, HMO is doing better than our neural networks, and we've closed the gap a little bit with that representation-based approach.</li>
+<li>These deep models provided complementary information to existing methods, and we were able to add a significant number of sequences to pfam by using a simple Ensemble between the hidden Market model and our Ensemble of cnns.</li>
+<li>We were able to improve performance a little bit more by pre-training these models using a sort of unsupervised approach where we delete protein position assets at random and then try to predict them back.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>We made a version of pfam called pfam n and released it, which is a first step towards potentially integrating this into pfam itself. We're gearing up to release a second version of this, which has an even bigger delta. We're excited to see what more we can do with these models and how they can be used to improve performance in the future.</p>
+<h2>Pre-Training and Ensemble Models</h2>
+<p>The large model benefits from pre-training and ensemble models. Comparing to previous approaches, the accuracy is slightly better. The number of parameters involved is much smaller, making it more accessible and convenient to run in a browser. A boost in performance is observed on small families, but it still hasn't caught up with the hmm.</p>
+<ul>
+<li>Pre-training adds quite a bit to the large model</li>
+<li>Ensemble models provide a boost in performance</li>
+<li>Smaller model is more accessible and convenient to run in a browser</li>
+<li>Boost in performance observed on small families</li>
+</ul>
+<h2>Domain Sequence Prediction</h2>
+<p>The model should be able to figure out where the domains are in the sequence. A simple switch is made to make a prediction for every position in the sequence. The predictions are thresholded to reliably predict both where the domains are and what they are. The magnify database is annotated with one and a half billion proteins, including 200 million that couldn't be annotated using the hmm or alignment-based approaches.</p>
+<ul>
+<li>Model predicts for every position in the sequence</li>
+<li>Predictions are thresholded to reliably predict domains</li>
+<li>Magnify database is annotated with one and a half billion proteins</li>
+</ul>
+<h2>T5 Model for Protein Sequences</h2>
+<p>The T5 model is a multi-task model that can take multiple inputs and multiple outputs and carry out many different tasks. It shares information between these tasks and therefore does a better job. The model is applied to protein sequences to predict pfam family descriptions. The model does a pretty good job and generates novel descriptions.</p>
+<ul>
+<li>T5 model is a multi-task model</li>
+<li>Model predicts pfam family descriptions</li>
+<li>Model generates novel descriptions</li>
+</ul>
+<h2>Assessing Novel Descriptions</h2>
+<p>Assessing novel descriptions is difficult. Experts at uniprot are consulted to assess the performance of the model. Uniprot has a much larger vocabulary than pfam, and there is a name for every one of the 200 million sequences in uniprot. A lot of sequences are called uncharacterized protein, which is a challenge.</p>
+<ul>
+<li>Assessing novel descriptions is difficult</li>
+<li>Experts at uniprot are consulted to assess the performance of the model</li>
+<li>Uniprot has a much larger vocabulary than pfam</li>
+<li>A lot of sequences are called uncharacterized protein</li>
+</ul>
+<h2>Generating Protein Names with Machine Learning</h2>
+<p>UniPro has expert manual creators who can evaluate protein names and determine their quality. Some names were immediately incorporated because they matched the training data. We were surprised to find that our models could generate names that were preferred over UniProt names in some cases. We are actively exploring this opportunity with UniProt and can provide names for 35 million uncharacterized proteins. However, if people don't like the names generated by the model, it could be interesting.</p>
+<h2>Approaching Optimization Work</h2>
+<p>Direct evolution involves random local search and selection. We want to bring machine learning into the space to guide the search and enable us to navigate around the landscape. We are interested in building models and representations to use and how to optimize the model and select the next batch of sequences. We have been focusing on the optimization piece and have done in silico benchmarking. We fit a model on a small amount of data and use an acquisition function to trade off between exploration and exploitation. We optimize the acquisition function using any method we like and then test the optimal sequences in the lab. We want to make model-based optimization more robust by creating a trust region and only using the model if it's accurate enough. We also came up with an approach called population-based black box optimization (P3BO) to handle large batches and find more diverse sequences.</p>
+<h2>Introduction</h2>
+<p>In this video, we will be discussing the use of machine learning approaches in finding diverse sequences for in silica problems. We will also be talking about experimental validation and how machine learning approaches can help in designing diverse capsids for gene therapy.</p>
+<h2>Finding Diverse Sequences</h2>
+<p>By making an adaptive version of the algorithm and tweaking its parameters, we can find more diverse sequences using machine learning approaches. This is important in finding solutions for downstream challenges that may not be covered in the initial experiment. For instance, in the context of therapeutics, having a diverse set of solutions can help in handling downstream challenges such as preventing attacks by the host immune system and delivering the cargo to specific tissues or cell types.</p>
+<h2>Experimental Validation</h2>
+<p>In designing diverse capsids for gene therapy, we focused on a 28 amino acid tile region of the 735 amino acid protein. We used an additive baseline model to design multi-mutants by combining mutations with good single site outcomes. We also tested about 11,000 random mutants and multi-mutants. After about seven steps, we couldn't find anything at all choosing at random that was viable. Using the additive model, we could do quite a bit better and get out to about 18-20 steps away from the starting point. However, we wanted to learn better models so that we could design multi-mutant sequences that get further away from the starting point. We trained models on the random data, which was largely dead, and used our 56,000 additive model design sequences as a test set. We found that we could get some lift over the additive model using even a simple logistic regression model.</p>
+<h2>Aav Capsids for Gene Therapy</h2>
+<p>Aav capsids are used in gene therapy to treat chronic genetic diseases. In order to realize this potential, we need to be able to design diverse new capsid proteins that can prevent attacks by the host immune system and deliver the cargo to specific tissues or cell types. We focused on a packaging phenotype, which is necessary but not sufficient for these challenges. The monomer of the AV capsid protein is used to make the captured, which is a very complicated interface. We looked at a small region of this protein, which is a 28 amino acid tile, and used 120 base per oligos to print their sequences. We had collaborators who had an amazing experimental process by which we could count the number of each variant in the plasma library and compare the ratio to the number that made it through a viral application and made it into the viral library. We used selection, which is the number in the viral library divided by the number in the passive library, to measure the success of our approach. We found that machine learning approaches can find highly diverse sequences that are far from the wild type and can assemble into the captured and package their own genome.</p>
+<h2>Conclusion</h2>
+<p>In conclusion, machine learning approaches can help in finding diverse sequences for in silica problems and in designing diverse capsids for gene therapy. These approaches can help in handling downstream challenges and in preventing attacks by the host immune system. By using an adaptive version of the algorithm and tweaking its parameters, we can find more diverse sequences and better handle downstream challenges.</p>
+<h2>Neural Network Approaches</h2>
+<p>In this retrospective study, we used neural network models to design sequences. We had three different training sets and three different types of models. We made ensembles of each type and tested nine models and nine ensembles to probe the effect of different training sets and model architectures. We used those models to evolve candidate sequences for 20 steps using a simple Evolution strategy. We tested a hundred model-selected and 900 model-evolved and model-designed sequences at each distance between 5 and 29 steps from one time. We found that the neural networks were surprisingly more robust than the legislative reaction model. We also found that there was quite a difference in terms of the diversity of sequences that were designed by each model site.</p>
+<ul>
+<li>The neural networks had more diverse sequences</li>
+<li>The regressional additive model had fewer diverse sequences</li>
+</ul>
+<h2>Peptide Design Task</h2>
+<p>This is a collaboration with some researchers at AstraZeneca. We had examples that activated both receptors, some examples that were specific to one receptor, and a set of data examples that didn't actually work. We trained models with 125 train data points. We had a limited budget and so we could only test sequences designed by one of our models. We used the multitask Ensemble and designed five sequences specific to each receptor and five that we're hoping would be dual Agonist. Some of our dual Agonist designs did really well and we're excited about that. We think this is a proof of concept that with limited data and with a challenging problem, we can use machine learning models to make progress on this problem.</p>
+<ul>
+<li>Our dual Agonist designs did really well</li>
+<li>We can use machine learning models to make progress on this problem</li>
+</ul>
+<h2>Protein Discovery and Optimization</h2>
+<p>During our research, we found that the mutated sequences had more activity than any of the sequences seen in training. This was surprising as these sequences were quite far from the wild type peptide, with six or seven mutations from the glucone peptide and more from the glp-1 peptide. We were walking out into sequence space here, even though we used a fairly simple approach. The actual numbers are shown in the comparison chart. Of course, there are many hurdles that one of these designers would have to clear in order to be useful, but it was interesting to see how well this worked.</p>
+<p>During this work, I worked with lots of people, particularly with a group at Harvard that founded a company called Diner Therapeutics, which has had quite a bit of success performing partnerships.</p>
+<h2>Questions and Answers</h2>
+<p>First of all, thank you for listening. We have four questions for your talk.</p>
+<h2>Question 1</h2>
+<p>The anonymous attendee asked if we were able to figure out where errors are coming in plot models. We found that there were 11 sequences originally that every Ensemble member classified wrongly, and they all classified them pretty much the same way wrongly. It turned out that these were actually errors in the data. There were various errors that were real errors that our model made. The way our model struggles is different from the way the hmm struggles. The age of men tends to struggle with really short sequences and with repetitive sequences. Our model doesn't have those problems. We're still trying to understand the problems that the different models have. One thing that we hope is that if the different kinds of models have different problems, if we Ensemble across them, we can beat all of the problems. The language model work that I talked about at the end, we're still trying to understand that. It's very unclear to me where those models perform summary and where they struggle and what they're picking up on.</p>
+<h2>Question 2</h2>
+<p>Tom Gallagher asked if the reduced representations from the models give any insight into possible evolutionary relationships between protein structural classes and the possible physical constraints on protein revolution. We haven't shown this definitively yet, but we've seen empirically some evidence of this when we look at families that we know are related. We can pick out things that we're kind of convinced by. I don't know how to do a large-scale task, so if anyone has any suggestions about how to set up a large-scale task or if anyone is interested in open-sourcing these models and the data, it would be great. The key fan itself is open source. The question about physical constraints and protein evolution is particularly interesting. The co-evolution signal that we saw even before Apple fold and maybe the upper fall capitalizes on really comes from a physical or functional constraint. Being able to harness more of those is a really interesting challenge.</p>
+<h2>Question 3</h2>
+<p>Christian I'm Trish asked if when correlating protein peptide sequence to function, an end-to-end approach is always the best option or if there can be circumstances where encoding the physical parameters of amino acids such as size, polarity, and reactivity can prove advantageous. We haven't managed to make these physics-based representations and little physical chemistry-based recognizers useful so far. We tried quite hard for AAV in particular, but we didn't find that any of that gave us any lift. I would be really interested if anyone shows this. I suspect what happens is that if you haven't updated, the model learns this very quickly by itself. One thing about these multitask models is that we can actually try and probe what the model knows by asking it to predict other stuff without explicitly training on it.</p>
+<h2>Principal Component Plot and Clustering of Peptide Expect</h2>
+<p>One of the questions from Anonymous Atlee was about the components/variables of PC1 and PC2 that captured the data and how much variance was kept. Unfortunately, I don't remember the answer to that. I only showed PC1 and PC2 to give an idea of how spread out the data was. If you send me an email, I can figure out the answer for you.</p>
+<h2>Improvement in Broad T5 Compared to Bird-Based Methods</h2>
+<p>Another question from an Anonymous attendee was about how much of the improvement in Broad T5 compared to bird-based methods was down to the number of parameters. These models are huge, and the improvement was pretty small. For the p-fan task, it was more of a proof of concept than anything. We were just hoping to replicate the performance to check that the model was working. We don't even know if we trained it as far as we could because we were just doing a sanity check. We're hoping to release a blueprint on this in the next couple of weeks, and we'd appreciate any comments or questions people have. This is something new that we're trying to figure out.</p>

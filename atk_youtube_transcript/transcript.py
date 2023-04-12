@@ -1,6 +1,7 @@
 from atk_youtube_transcript.data_parser import DataParser
 from atk_youtube_transcript.prompt import chapter_prompt, general_prompt
 from atk_youtube_transcript.transcription_service import TranscriptionService
+from atk_youtube_transcript.utils import html_parser
 from langchain.llms import OpenAI
 from langchain.text_splitter import TokenTextSplitter
 from langchain.document_loaders import YoutubeLoader
@@ -59,13 +60,15 @@ class Transcript:
                                    f"{title_link.format(code=self.video_code, time=start[title_time])}"
                 new_prompt = self.chapter_prompt + "\n" + image_prompt + "\n" + link_prompt + "\n\n" + chunk
                 response: str = self.llm(new_prompt)
+                final_response: str = html_parser(response)
                 with open(file_name, "a+") as file:
-                    file.write(f"\n\n{response}")
+                    file.write(f"\n\n{final_response}")
                     file.write(f"</div>")
+
                     counter += 1
                 match_index = i + 1
                 print(f"Punctuated transcription completed for chapters: {counter}")
-        return os.path.join(self.main_dir, file_name)
+            return os.path.join(self.main_dir, file_name)
 
     def plain_transcript(self) -> str:
         print("Your video don't contain chapters or titles in the description."
@@ -91,8 +94,9 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
-            with open(file_name, "a+") as file:
-                file.write(f"\n\n{response}")
+            final_response: str = html_parser(response)
+        with open(file_name, "a+") as file:
+            file.write(f"\n{final_response}")
         return os.path.join(self.main_dir, file_name)
 
     # @jit(target_backend='cuda')
@@ -120,7 +124,8 @@ class Transcript:
             prompt: str = self.general_prompt + "\n\n" + \
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
+            final_response: str = html_parser(response)
             with open(file_name, "a+") as file:
-                file.write(f"\n\n{response}")
+                file.write(f"\n\n{final_response}")
         return os.path.join(self.main_dir, file_name)
 

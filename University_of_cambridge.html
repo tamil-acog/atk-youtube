@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+
+  * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+
+  :root {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+    color: black;
+  }
+
+  body {
+    background-color: #e8e8e8;
+    padding: 2rem 5vw;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1.8rem;
+    margin: 2.5rem 0 0.8rem;
+  }
+
+  p {
+    margin-top: 0.8rem;
+  }
+  ul {
+  	list-style-position: inside;
+  	text-align: center;
+  }
+</style><h1 style="text-align: center;"><a href="https://www.youtube.com/watch?v=YtqVgfESPEg"><strong>Biopharmaceutical Informatics Symposium - Opening remarks; Dr. Lucy Colwell, Google Research.</strong></a></h1>
+
+<h2>Introduction</h2>
+<p>
+Hello everyone, welcome to the first ever Symposium on biopharmaceutical informatics. I'm really excited, along with Jan Janice Reichert, Pam Burghard, Victor, and me, to organize this event and am thankful to the Antibody Society for hosting it. We have a great line of speakers today, and of course, our first speaker is Lucy Caldwell from Google Research. 
+</p>
+
+<h2>Lucy Caldwell's Keynote Address</h2>
+<p>
+Lucy Caldwell is going to talk about her interest in several directions and making use of predictive powers for protein information for different uses. She is a faculty member at Cambridge and has been on sabbatical at Google Research recently. She will cover quite a few different areas, including a couple of example experimental studies where they've worked with various biopharmaceutical topics. She is particularly interested in the problem of going directly from sequence to function. 
+</p>
+<p>
+As we all know, there's tons and tons of sequence data. There's enormous potential here to solve other problems too. Lucy is really interested generally in this problem of using that data to build models that capture the relationship between protein sequence and phenotype. Of course, phenotype is extremely ill-defined. She is using it to talk about the feature type of a molecule. 
+</p>
+<p>
+Lucy has a beautiful picture that she borrowed from somebody's paper. She is thinking of protein families as being these different peaks in the landscape. You could imagine maybe even antibodies with different specificities being among these different peaks. Within each peak, there are hills and valleys, and it's extremely complicated. The most she has seen of these landscapes by collecting data is a dataset of close to half a million sequences, and it's extremely difficult to understand it.
+</p>
+
+<h2>Conrad Krasik's Talk</h2>
+<p>
+Conrad Krasik is the CEO of Natural Antibody as well as an assistant professor at Denmark. He is going to talk more about the importance of datasets in training their learning models and also developing machine learning algorithms. 
+</p>
+<p>
+Before he starts, Sandeep has a few logistical items. First of all, he wants to remind everybody that this event is being recorded. They have a break planned somewhere between around 12:25 and they'll need to come back by 12:40. Sandeep also wants to remind the audience that they will be muted throughout the event, but if they have any questions, they will be monitoring the questions through Q and A. So please send your questions as the speakers are speaking through Q and A, and they will then at the end of the talk select some of these questions and ask them live. 
+</p>
+
+<h2>Introduction:</h2>
+<p>The speaker talks about the need for better tools to understand protein sequence data and the challenges in annotating and optimizing protein sequences. They also mention the goal of being able to capture the relationship between protein sequence and functional properties or phenotypes, reducing data collection requirements, and learning a more efficient compact representation.</p>
+
+<h2>Sequence Annotation</h2>
+<p>The speaker discusses sequence annotation as an example of protein discovery and mentions that one out of all protein coding genes from bacterial genomes cannot be annotated with a function. They also talk about the need for better tools to understand protein sequence data.</p>
+
+<h2>Protein Optimization</h2>
+<p>The speaker talks about protein optimization and views it as being able to navigate and climb peaks and identify distant peaks and cross valleys. They mention the goal of being able to transfer information between different proteins and different functional activities and learning a more efficient compact representation.</p>
+
+<h2>Using Deep Models to Learn Representations of Sequence Space</h2>
+<p>The speaker talks about using deep models to learn representations or embeddings of sequence space and focuses on trying to avoid alignment. They mention the motivation behind this interest in building deep models to try and do a better job of annotating protein sequences.</p>
+
+<h2>Pre-training Across Millions or Billions of Unlabeled Sequences</h2>
+<p>The speaker talks about the benefits of pre-training across millions or billions of unlabeled sequences, which enables the performance to improve and reduces the compute burning for prediction.</p>
+
+<h2>Predicting Protein Family from Amino Acid Sequence</h2>
+<p>The speaker talks about the problem of predicting which protein family an amino acid sequence comes from and mentions the existence of pfam, a protein family annotation database.</p>
+
+<h2>Experimental Work</h2>
+<p>The speaker talks about some experimental work in the context of aav cancer design and peptide therapeutics.</p>
+
+<h2>Introduction</h2>
+<p>The speaker presents a deep learning problem related to the distribution of family sizes and the wide distribution of lengths in sequences. They introduce a dilated resnet model that integrates information along the sequence and learns a fixed representation for every sequence.</p>
+
+<h2>Performance of Different Methods</h2>
+<p>The speaker shows the performance of different methods of the dilated resnet approach, stratified by the distance from the train data. They found that by training a large Ensemble of these neural networks, they could do better than existing methods at this problem. However, the single model struggled with the most remote homologs. They built a clustered split to probe the problem further and found that they could still do better than existing approaches but for the most remote hot sequences, it was a difficult problem.</p>
+	<ul{padding-left: 0;}>
+	  <li>Existing methods are not effective for remote homologs</li>
+	  <li>Ensemble of neural networks performs better than existing methods</li>
+	  <li>Clustered split helps to probe the problem further</li>
+	</ul>
+
+<h2>Using Proximity in Learned Representation Space</h2>
+<p>The speaker found that using proximity in the learned representation space improved the performance of the dilated resnet approach. They stratified the performance by family size and found that HMO did better than their neural networks for very small families with less than 17 training examples. They also found that deep models provided complementary information to existing methods and built a simple Ensemble between the hidden Market model and their Ensemble of cnns to get a better combined performance.</p>
+<ul{padding-left: 0;}>
+		<li>Using proximity in learned representation space improves performance</li>
+		<li>HMO does better than neural networks for very small families</li>
+		<li>Deep models provide complementary information to existing methods</li>
+		<li>Ensemble of hidden Market model and cnns performs better than either model on its own</li>
+</ul>
+
+<h2>Adding Sequences to Pfam</h2>
+<p>The speaker used the simple Ensemble to add a bunch of sequences to pfam and made a version of pfam called pfam n. They were excited to be able to add a significant number of sequences in a relatively short amount of time and are gearing up to release a second version of this which has an even bigger Delta.</p>
+
+<h2>Pre-Training Models</h2>
+<p>The speaker trained models as large as denoising autoencoders using an unsupervised approach and found that they could improve performance a little bit more at this task. They showed results for Pro TNN with single layer models and 12 layer models, either trained from scratch on the classification task or pre-trained and then fine-tuned.</p>
+
+<h2>Pre-training and Ensemble of Neural Networks</h2>
+<p>The speaker mentions that pre-training adds quite a bit to the large model and if they Ensemble a few of them, they get a little bit more of a boost in performance. They compare it to their previous approaches and are doing slightly better overall. They are showing accuracy rather than error rate on the y-axis. They want this to be higher. They mention that they can do a little bit better and they suspect they could push this up a bit more. They were really interested in the number of parameters that were involved. Previously, their Ensemble of neural networks had a huge number of parameters which means that inference is actually relatively expensive. With the pre-trained model, they are looking at a much smaller model which is convenient if they want to make it accessible and run it for example in a browser. They also got a little bit more of a boost on the small families and they still haven't quite caught up with the hmm but they're getting really close at this point.</p>
+
+<h2>Switching to Prediction for Every Position in the Sequence</h2>
+<p>The speaker mentions that they were using pre-cut domain sequences which kind of feels like cheating. They decided that the model should be able to figure out where the domains are in the sequence and so they made a simple switch to basically making a prediction for every position in the sequence rather than making a prediction for a whole domain sequence. They mention that they make a prediction for every class and every position or residue in the sequence and then they simply threshold those predictions. It allows them to reliably predict both where the domains are and what they are. They applied that to the magnify database and were able to provide annotations one and a half billion proteins. It included something like 200 million that simply couldn't be annotated using the hmm or alignment based approaches. They look forward to hopefully being able to cover a bit more of that database because one and a half billion is good but it's still not really getting close to the 2.8 billion sequences that are there.</p>
+
+<h2>Multi-task Model for Protein Sequences</h2>
+<p>The speaker mentions that so far they've really talked about classification questions and it's great being able to classify these sequences but what happens when they come across a sequence that is different from anything they've seen before and maybe has a new function. Their classification models at the moment can't handle that. They wanted to take advantage of some of the approaches that are being developed in language modeling and this is a T5 model. It's a multi-task model essentially either is that they have a single model that can carry to take multiple inputs and multiple outputs and Carry Out many different tasks and the idea is that it shares information between these tasks and therefore does a better job. They applied this to protein sequences and essentially being able to predict at least in the case of pfam pfam family descriptions they felt was a good first task. They mention that they asked it to be able to predict both the family description and the family accession and also the family ID are given an input amino acid sequence. They mention that the model does a pretty good job and they get roughly 88 at this task. They mention that they do a bit better at the family accession task and of course what they want to do is they want the model to generate novel descriptions. They mention that it's difficult to judge those novel descriptions and assess them. They turn to the experts at uniprot and mention that uniprot has a much larger vocabulary than p-fan that they're interested in initially in written the protein names. They mention that there's a name for every well roughly speaking a name for every one of the 200 something million sequences in Newport. They mention that it turns out a lot of sequences are called uncharacterized protein which is a challenge that they'll come to in a second. They mention that they were quite surprised about this and something like 30% of the proteins in Europe are uncharacterized. They mention that they turn to the experts at uniprot to ask if the models can generate useful names for these uncharacterized proteins which turns out to be quite challenging.</p>
+
+<h2>Generating Protein Names with Machine Learning</h2>
+<p>
+The team at Unipro has expert manual creators who can determine whether a protein name is good or not. They can immediately incorporate names that match the training data. We found that many names could be immediately computationally cooperated using the labels from Unicrot. However, there were some cases where the names were slightly different from the name in Uniprot, but that doesn't mean they're wrong. There were some cases where Uniport was preferred, and in some cases, the neural network was preferred. Our models were generating EC numbers, which don't qualify as names, so there were a few cases that were rated as errors. We were surprised that our models could generate names that were preferred to the Uniprot name. We can provide names for something like 35 million of the uncharacterized proteins, and we're actively exploring this with Unipro right now.
+</p>
+
+<h2>Approaching Optimization Work</h2>
+<p>
+Direct evolution involves some kind of random local search and selection. We're interested in bringing machine learning into the space and using it to guide that search. We want to enable us to navigate around the landscape and potentially discover better peaks. We're interested in how to build these models and the kind of representations to use and how to optimize the model and select the next batch of sequences. We did a bunch of in Silicon benchmarking to make model-based optimization more robust. We came up with an approach called population-based black box optimization or p3bo, which essentially samples from each batch from a portfolio of algorithms and kind of weight algorithms depending on how well they're doing. We found that we really find more diverse sequences using that.
+</p>
+
+<h2>Introduction</h2>
+<p>
+In this video, we will be discussing the use of machine learning approaches in finding diverse sequences for in silica problems. We will also be talking about experimental validation and how machine learning approaches can help in designing diverse capsids for gene therapy.
+</p>
+
+<h2>Finding Diverse Sequences</h2>
+<p>
+By making an adaptive version of the algorithm and tweaking its parameters, we can find more diverse sequences using machine learning approaches. This is important in finding solutions for downstream challenges that may not be covered in the initial experiment. For instance, in the context of therapeutics, having a diverse set of solutions can help in handling downstream challenges such as preventing attacks by the host immune system and delivering the cargo to specific tissues or cell types.
+</p>
+
+<h2>Experimental Validation</h2>
+<p>
+In gene therapy, AAV capsids are used to treat chronic genetic diseases. However, to realize its potential, we need to design diverse new capsid proteins that can prevent attacks by the host immune system and deliver the cargo to specific tissues or cell types. We focused on a 28 amino acid tile of the 735 amino acid protein monomer of the AV capsid protein. We used an additive baseline model to design multi-mutants by combining mutations with good single site outcomes. We also used a simple evolution guided by this model to come up with 36,000 baseline sequence designs. We tested about 11,000 random mutants and multi-mutants and found that we could distinguish between viable and non-viable controls. After training models on the random data, we found that we could get some lift over the additive model using even a simple logistic regression model.
+</p>
+
+<h2>Results</h2>
+<ul{padding-left: 0;}>
+		<li>After about seven steps, we couldn't find anything at all choosing at random that was viable using the additive model.</li>
+		<li>We could get out to 18-20 steps away from the starting point using the additive model, but the percentages were low.</li>
+		<li>Using machine learning approaches, we were able to design multi-mutant sequences that could get further away from the starting point.</li>
+		<li>We found that we could get some lift over the additive model using even a simple logistic regression model.</li>
+</ul>
+
+<h2>Neural Network Approaches for Sequence Design</h2>
+<p>We conducted a retrospective study using neural network models to design sequences. We used three different training sets and three different types of models, which got increasingly more complicated in terms of the number of parameters. We made ensembles of each type, resulting in nine models and nine ensembles that we tested. We evolved candidate sequences for 20 steps using a simple Evolution strategy and tested 100 model-selected and 900 model-evolved and model-designed sequences. We found that the neural networks were surprisingly more robust than the legislative reaction model, and there was quite a difference in terms of the diversity of sequences that were designed by each model. </p>
+<ul>{padding-left: 0;}
+<li>We could get quite significant improvement over the additive model shown here in Gray.</li>
+<li>The CNN and RNN could walk out into sequence space in quite an impressive manner.</li>
+<li>The regressive model kind of followed with this training set, but once we had a bigger training set, it actually did really well.</li>
+<li>The neural networks had more diverse sequences than the regressional additive model.</li>
+</ul>
+
+<h2>Peptide Design Task</h2>
+<p>We collaborated with some researchers at AstraZeneca to design a peptide Agonist against the glucagon and glp-1 receptors. We had examples that activated both receptors, some examples that were specific to one receptor, many that were specific to glucagon, and a set of data examples that didn't activate either receptor. We trained models using 125 train data points, and we had a limited budget, so we could only test sequences designed by one of our models. We used the multitask Ensemble, and our models could perform pretty well on this data set. We designed five sequences specific to each receptor and five that we're hoping would be dual Agonist, and some of our dual Agonist designs did really well.</p>
+
+<h2>Protein Optimization and Discovery</h2>
+<p>
+The speaker discusses their work on protein optimization and discovery. They found that their sequences had more activity than any of the sequences seen in training, which was surprising given the number of mutations from the wild type peptide. They also discuss the hurdles that designers would have to clear in order to make their work useful. The speaker worked with a group at Harvard that founded a company called Diner Therapeutics, which has had success with partnerships.
+</p>
+
+<h2>Questions and Answers</h2>
+<p>
+The speaker answers questions from attendees. They discuss how they found errors in the data and the different problems that their model and the hmm struggle with. They also talk about the potential for ensemble models to beat all of the problems. The speaker is still trying to understand the performance of language models and where they struggle. They also discuss the potential for their work to provide insights into the relationships between protein structural classes and the physical constraints on protein evolution.
+</p>
+<ul{padding-left: 0;}>
+		<li>Question 1: Does the model give any insight into possible evolutionary relationships between protein structural classes and the possible physical constraints on protein evolution?</li>
+		<li>Question 2: When correlating protein peptide sequence to function, is an end-to-end approach always the best option or can there be circumstances where encoding the physical parameters of amino acids can prove advantageous?</li>
+</ul>
+
+<h2>Tasks and Questions</h2>
+<p>On those tasks, I haven't thought that through, but I think there's something to be done there. Thanks.</p>
+
+<p>Okay, thank you. And I think I probably have time for one or two more questions. This one is also from Anonymous Atlee, and they are asking: you showed principal component plot and clustering of peptide expect, what were the components/variables of PC1 and PC2 which captured the data, and how much variance was kept?</p>
+
+<p>Yes, this is a great question. I'm embarrassed to say that I don't remember the answer in terms of how much variance was captured. I mean, I know I just showed sort of PC1 and PC2. It was very much just to try and give some idea of how spread out the data was. But these are sort of good questions that I can't answer, sorry. But if you send me an email, I can figure out the answer. </p>
+
+<p>Alright, so I think probably one more question. I can ask. This is again from an Anonymous attendee, and they asked: thanks Lucy, how much of the improvement in Broad T5 compared to bird-based methods do you think is down to the number of parameters? Also, are you just go ahead, go ahead, go ahead.</p>
+
+<p>No, no, I was going to say that this is really a good question. And these models are huge, essentially. And it was sort of a pretty small improvement. And I think, you know, for the P-FAN task, it was also sort of such a limited vocabulary that it was really sort of more of a proof of concept of writing more than anything. So I think we were just hoping to kind of replicate the performance to kind of just check that the model was working more than anything. I kind of don't even know if you kind of like trained it as far as we could kind of thing because we were really just trying to sort of a sanity check for us and what I was working. I think it's a very good point that there's going to be like a huge number of parameters. And we're hoping to release a blueprint on this in the next couple of weeks, which will be an early stage blueprint. And we'd very much appreciate any kind of comments that people have because I think this is something new and that we're trying to figure out this week. Any questions like this, questions or comments would be really appreciated. Thanks.</p>
