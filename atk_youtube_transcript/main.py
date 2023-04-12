@@ -26,7 +26,6 @@ def transcript(video_code: str):
             do_transcript.whisper_transcript()
         except Exception as err:
             logging.info(err)
-    return True
 
 
 def main() -> None:

@@ -54,7 +54,6 @@ class Transcript:
                 chunk = " ".join(chunked_text)
                 image_link: str = self.config["IMAGE_LINK"]
                 image_prompt: str = f"\nImage link to be added: {image_link.format(url=parsed_images_url[counter])}"
-                print(len(parsed_images_url))
                 title_link: str = self.config["TITLE_LINK"]
                 link_prompt: str = f"\nLink to be added in the title: " \
                                    f"{title_link.format(code=self.video_code, time=start[title_time])}"
@@ -63,16 +62,14 @@ class Transcript:
                 final_response: str = html_parser(response)
                 with open(file_name, "a+") as file:
                     file.write(f"\n\n{final_response}")
-                    file.write(f"</div>")
-
                     counter += 1
                 match_index = i + 1
                 print(f"Punctuated transcription completed for chapters: {counter}")
-            return os.path.join(self.main_dir, file_name)
+        return
 
     def plain_transcript(self) -> str:
         print("Your video don't contain chapters or titles in the description."
-                     "So ChatGPT itself is going to add titles for your video")
+              "So ChatGPT itself is going to add titles for your video")
         print(f"Usually it takes around 5-8 mins for a 40 mins video")
         loader = YoutubeLoader.from_youtube_channel(f"https://www.youtube.com/watch?v={self.video_code}")
         transcripts: List[Document] = loader.load()
@@ -95,14 +92,15 @@ class Transcript:
                           d.page_content.replace('[Music]', '')
             response: str = self.llm(prompt)
             final_response: str = html_parser(response)
-        with open(file_name, "a+") as file:
-            file.write(f"\n{final_response}")
-        return os.path.join(self.main_dir, file_name)
+            with open(file_name, "a+") as file:
+                file.write(f"\n{final_response}")
+        return
 
     # @jit(target_backend='cuda')
+
     def whisper_transcript(self) -> str:
         print("Your video do not have captions. So an Audio-to-Speech Model"
-                     " will generate the transcripts for you.")
+              " will generate the transcripts for you.")
         print(f"Usually it takes around 20 mins for a 40 mins video if it does not contain captions")
         start, texts = DataParser.whisper_data(video_code=self.video_code, video_title=self.video_title)
         transcript = " ".join(texts).strip(" ")
@@ -127,5 +125,4 @@ class Transcript:
             final_response: str = html_parser(response)
             with open(file_name, "a+") as file:
                 file.write(f"\n\n{final_response}")
-        return os.path.join(self.main_dir, file_name)
-
+        return
