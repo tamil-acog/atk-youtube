@@ -1,6 +1,0 @@
-VIDEO_LINK:
-    "<h1 style=\"text-align: center;\"><a href=\"https://www.youtube.com/watch?v={code}\"><strong>{title}</strong></a></h1>"
-
-IMAGE_LINK: "\n<img src=\"{url}\" alt=\"Not Applicable\"/>"
-
-TITLE_LINK: "\n\"https://www.youtube.com/watch?v={code}&t={time}s\""

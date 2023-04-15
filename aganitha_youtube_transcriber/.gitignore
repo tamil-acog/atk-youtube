@@ -1,5 +1,0 @@
-*.html
-atk_youtube_transcript/__pycache__/
-dist
-.venv
-poetry.lock
